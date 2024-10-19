@@ -1,13 +1,30 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import SectionHeading from "./section-heading";
 import { motion } from "framer-motion";
 import { useSectionInView } from "../context/hooks";
 import { sendEmail } from "../action/sendEmail";
 import { SubmitBtn } from "./submit-btn";
 import toast from "react-hot-toast";
+
 const Contact = () => {
   const { ref } = useSectionInView("Contact", 0.5);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    setIsSubmitting(true);
+    const formData = new FormData(e.currentTarget);
+    const { data, error } = await sendEmail(formData);
+    setIsSubmitting(false);
+
+    if (error) {
+      toast.error(error);
+    } else {
+      toast.success("Email sent successfully");
+    }
+  };
 
   return (
     <motion.section
@@ -29,14 +46,7 @@ const Contact = () => {
       </p>
       <form
         className="mt-10 flex flex-col dark:text-black"
-        action={async (formData) => {
-          const { data, error } = await sendEmail(formData);
-          if (error) {
-            toast.error(error);
-          } else {
-            toast.success("Email sent successfully");
-          }
-        }}
+        onSubmit={handleSubmit}
       >
         <input
           className="h-14 rounded-lg border border-black/10 px-4 dark:bg-white dark:bg-opacity-80 dark:focus:bg-opacity-100 transition-all dark:outline-none"
@@ -53,9 +63,10 @@ const Contact = () => {
           maxLength={5000}
           name="message"
         />
-        <SubmitBtn />
+        <SubmitBtn pending={isSubmitting} />
       </form>
     </motion.section>
   );
 };
+
 export default Contact;

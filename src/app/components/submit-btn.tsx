@@ -1,10 +1,10 @@
 import React from "react";
 import { FaPaperPlane } from "react-icons/fa";
-import { useFormStatus } from "react-dom";
+interface Props {
+  pending: boolean;
+}
 
-export const SubmitBtn = () => {
-  const { pending } = useFormStatus();
-
+export const SubmitBtn = ({ pending }: Props) => {
   return (
     <button
       disabled={pending}
