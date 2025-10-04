@@ -71,7 +71,7 @@ const Intro = () => {
 
         <a
           className="bg-white px-7 py-3 flex items-center gap-2 rounded-full outline-none focus:scale-110 hover:scale-110 transition active:scale-105 group cursor-pointer border border-black/10 dark:bg-white/10"
-          href="/Aadith_T_Resume.pdf"
+          href="/aadith.pdf"
           download
         >
           Download CV
